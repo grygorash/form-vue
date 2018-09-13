@@ -11,8 +11,9 @@
           <input type="text"
                  placeholder="Name"
                  v-model="nameValue"
-                 @blur="handleValidate('name')">
-          <p class="error" :class="{'not-valid': nameValid !== null && !nameValid}">
+                 v-on:keyup="handleInputChange('name')">
+          <p class="error"
+             :class="{'not-valid': nameValid !== null && !nameValid}">
             Name must have more than 3 symbols
           </p>
         </div>
@@ -20,8 +21,9 @@
           <input type="email"
                  placeholder="Email"
                  v-model="emailValue"
-                 v-on:blur="handleValidate('email')">
-          <p class="error" :class="{'not-valid': emailValid !== null && !emailValid}">
+                 v-on:keyup="handleInputChange('email')">
+          <p class="error"
+             :class="{'not-valid': emailValid !== null && !emailValid}">
             Enter valid email
           </p>
         </div>
@@ -29,25 +31,24 @@
           <input type="tel"
                  placeholder="Phone"
                  v-model="phoneValue"
-                 v-on:blur="handleValidate('phone')">
-          <p class="error" :class="{'not-valid': phoneValid !== null && !phoneValid}">
+                 v-on:keyup="handleInputChange('phone')">
+          <p class="error"
+             :class="{'not-valid': phoneValid !== null && !phoneValid}">
             Phone must have more than 5 numerals
           </p>
         </div>
-        <button class="main-btn" :class="{disabled: !nameValid || !emailValid || !phoneValid}"
-                @click="handleChangeStep">
-          Next
-        </button>
       </div>
 
-      <div class="form--second-step" :class="{active: step === 2}">
+      <div class="form--second-step"
+           :class="{active: step === 2}">
         <div class="form-field">
           <input type="number"
                  min="1"
                  placeholder="Years of experience"
                  v-model="experienceValue"
-                 v-on:blur="handleValidate('experience')">
-          <p class="error" :class="{'not-valid': experienceValid !== null && !experienceValid}">
+                 v-on:keyup="handleInputChange('experience')">
+          <p class="error"
+             :class="{'not-valid': experienceValid !== null && !experienceValid}">
             Experience must be at least 1 year
           </p>
         </div>
@@ -55,8 +56,9 @@
           <input type="text"
                  placeholder="Previous employer"
                  v-model="employerValue"
-                 v-on:blur="handleValidate('employer')">
-          <p class="error" :class="{'not-valid': employerValid !== null && !employerValid}">
+                 v-on:keyup="handleInputChange('employer')">
+          <p class="error"
+             :class="{'not-valid': employerValid !== null && !employerValid}">
             Employer must have more than 1 symbol
           </p>
         </div>
@@ -64,25 +66,40 @@
           <input type="text"
                  placeholder="Link to LinkedIn"
                  v-model="linkValue"
-                 v-on:blur="handleValidate('link')">
-          <p class="error" :class="{'not-valid': linkValid !== null && !linkValid}">
+                 v-on:keyup="handleInputChange('link')">
+          <p class="error"
+             :class="{'not-valid': linkValid !== null && !linkValid}">
             Enter correct URL
           </p>
         </div>
-        <button class="main-btn" :class="{disabled: !experienceValid || !employerValid || !linkValid}"
-                @click="handleChangeStep">
-          Complete application
-        </button>
       </div>
+      <button class="main-btn"
+              :style="step === 3 ? {display: 'none'} : ''"
+              @click="e => handleChangeStep(e, step)">
+        {{step === 1 ? 'Next' : 'Complete application'}}
+      </button>
 
-      <div class="form--third-step" :class="{active: step === 3}">
+      <div class="form--third-step"
+           :class="{active: step === 3}">
         <h2>Your application is complete</h2>
-        <p>Name: <span>{{nameValue}}</span></p>
-        <p>Email: <span><a :href="`mailto:${emailValue}`">{{emailValue}}</a></span></p>
-        <p>Phone: <span>{{phoneValue}}</span></p>
-        <p>Experience: <span>{{experienceValue}} years</span></p>
-        <p>Last employer: <span>{{employerValue}}</span></p>
-        <p>LinkedIn: <span><a :href="linkValue" target="_blank">{{linkValue}}</a></span></p>
+        <p>Name:
+          <span>{{nameValue}}</span>
+        </p>
+        <p>Email:
+          <span><a :href="`mailto:${emailValue}`">{{emailValue}}</a></span>
+        </p>
+        <p>Phone:
+          <span>{{phoneValue}}</span>
+        </p>
+        <p>Experience:
+          <span>{{experienceValue}} years</span>
+        </p>
+        <p>Last employer:
+          <span>{{employerValue}}</span>
+        </p>
+        <p>LinkedIn:
+          <span><a :href="linkValue" target="_blank">{{linkValue}}</a></span>
+        </p>
       </div>
     </form>
   </div>
@@ -109,10 +126,41 @@
       };
     },
     methods: {
-      handleChangeStep() {
-        this.step = this.step + 1;
+      handleChangeStep(e, step) {
+        e.preventDefault();
+        if (step === 1) {
+          if (this.nameValid === null) {
+            this.nameValid = false;
+          }
+          if (this.emailValid === null) {
+            this.emailValid = false;
+          }
+          if (this.phoneValid === null) {
+            this.phoneValid = false;
+          }
+          if (this.nameValid === true &&
+            this.emailValid === true &&
+            this.phoneValid === true) {
+            this.step = this.step + 1;
+          }
+        } else if (step === 2) {
+          if (this.experienceValid === null) {
+            this.experienceValid = false;
+          }
+          if (this.employerValid === null) {
+            this.employerValid = false;
+          }
+          if (this.linkValid === null) {
+            this.linkValid = false;
+          }
+          if (this.experienceValid === true &&
+            this.employerValid === true &&
+            this.linkValid === true) {
+            this.step = this.step + 1;
+          }
+        }
       },
-      handleValidate(input) {
+      handleInputChange(input) {
         const emailValidation = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
           phoneValidation = /^\d+$/,
           linkValidation = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
@@ -159,7 +207,7 @@
             return this.linkValid = false;
           }
         }
-      }
+      },
     }
   };
 </script>
