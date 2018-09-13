@@ -73,11 +73,6 @@
           </p>
         </div>
       </div>
-      <button class="main-btn"
-              :style="step === 3 ? {display: 'none'} : ''"
-              @click="e => handleChangeStep(e, step)">
-        {{step === 1 ? 'Next' : 'Complete application'}}
-      </button>
 
       <div class="form--third-step"
            :class="{active: step === 3}">
@@ -101,6 +96,12 @@
           <span><a :href="linkValue" target="_blank">{{linkValue}}</a></span>
         </p>
       </div>
+
+      <button class="main-btn"
+              :style="step === 3 ? {display: 'none'} : ''"
+              @click="e => handleChangeStep(e, step)">
+        {{step === 1 ? 'Next' : 'Complete application'}}
+      </button>
     </form>
   </div>
 </template>
