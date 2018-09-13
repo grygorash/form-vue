@@ -1,12 +1,16 @@
 <template>
   <div>
     <div class="progress">
-      <div class="progress--circle" :class="{active: step === 1 || step === 2 || step === 3}"></div>
-      <div class="progress--circle" :class="{active: step === 2 || step === 3}"></div>
-      <div class="progress--circle" :class="{active: step === 3}"></div>
+      <div class="progress--circle"
+           :class="{active: step === 1 || step === 2 || step === 3}"></div>
+      <div class="progress--circle"
+           :class="{active: step === 2 || step === 3}"></div>
+      <div class="progress--circle"
+           :class="{active: step === 3}"></div>
     </div>
     <form class="form">
-      <div class="form--first-step" :class="{active: step === 1}">
+      <div class="form--first-step"
+           :class="{active: step === 1}">
         <div class="form-field">
           <input type="text"
                  placeholder="Name"
